@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+    <title>Accueil Matricule</title>
+  </head>
+  <body>
+    <div class="login-box">
+      <h2>Login</h2>
+      <form action="/" method="POST">
+        {% if error %}
+        <p style="color: #f00">{{error}}</p>
+        {% elif error_format %}
+        <p style="color: #f00">{{error_format}}</p>
+        {% endif %}
+        <div class="user-box">
+          <input type="text" id="id-mat" name="matricule" maxlength="6" />
+          <label for="id-mat">Matricule : </label>
+          
+          <button type="submit" name="envoyer">Envoyer</button>
+      </form>
+    </div>
+  </body>
+</html>
+
