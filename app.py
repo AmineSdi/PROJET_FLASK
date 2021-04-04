@@ -52,14 +52,12 @@ def main():
 
     with app.app_context():
 
-        with open("declaration_punaises.csv") as file:
-            file.readline()
-            for line in file:
+        a_file = open("declaration_punaises.csv")
 
-                array = line.split(',')
-                get_db().insert_data(array)
-
-        file.close()
+        rows = csv.reader(a_file)
+        next(rows)
+        get_db().insert_data(rows)
+        a_file.close()
 
 
 if __name__ == "__main__":
