@@ -4,22 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
-    <title>Accueil Matricule</title>
+    <title>Accueil Déclaration</title>
   </head>
   <body>
     <div class="login-box">
-      <h2>Login</h2>
-      <form action="/" method="POST">
-        {% if error %}
-        <p style="color: #f00">{{error}}</p>
-        {% elif error_format %}
-        <p style="color: #f00">{{error_format}}</p>
+      <h2>Recherche déclaration</h2>
+      <form action="/" method="POST,GET">
+        {% if msg_vide %}
+        <p style="color: #f00">{{msg_vide}}</p>
         {% endif %}
         <div class="user-box">
-          <input type="text" id="id-mat" name="matricule" maxlength="6" />
-          <label for="id-mat">Matricule : </label>
+          <input type="text" id="id-decla" name="decla" placeholder="Par nom de quartier ou d'arrondissement ..."/>
+          <label for="id-decla">Déclaration : </label>
           
-          <button type="submit" name="envoyer">Envoyer</button>
+          <button type="submit">Envoyer</button>
       </form>
     </div>
   </body>

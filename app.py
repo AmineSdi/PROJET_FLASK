@@ -3,7 +3,7 @@ import requests
 import sqlite3
 import re
 import csv
-from database import Database
+from .database import Database
 from datetime import datetime
 
 
@@ -44,22 +44,38 @@ def download_csv(str):
 # Fonction main (principale)
 
 
-def main():
+url_decl = "https://data.montreal.ca/dataset/49ff9fe4-eb30-4c1a-a30a-fca82d4f5c2f/resource/6173de60-c2da-4d63-bc75-0607cb8dcb74/download/declarations-exterminations-punaises-de-lit.csv"
 
-    url_decl = "https://data.montreal.ca/dataset/49ff9fe4-eb30-4c1a-a30a-fca82d4f5c2f/resource/6173de60-c2da-4d63-bc75-0607cb8dcb74/download/declarations-exterminations-punaises-de-lit.csv"
+download_csv(url_decl)
 
-    download_csv(url_decl)
+with app.app_context():
 
-    with app.app_context():
+    a_file = open("declaration_punaises.csv")
 
-        a_file = open("declaration_punaises.csv")
-
-        rows = csv.reader(a_file)
-        next(rows)
-        get_db().insert_data(rows)
-        a_file.close()
+    rows = csv.reader(a_file)
+    next(rows)
+    get_db().insert_data(rows)
+    a_file.close()
 
 
-if __name__ == "__main__":
-    main()
-    app.run(debug=True)
+@app.route("/", methods=["POST", "GET"])
+def accueil():
+
+    if request.method == "GET":
+
+        return render_template("index.html")
+
+    if request.method == "POST":
+
+        description = request.form["decla"]
+        print(description)
+
+        if description == "" or description == None:
+            return render_template("index.html", msg_vide="Le champs est obligatoire")
+    # return render_template("index.html")
+
+
+@ app.route("/resultats", methods=["POST"])
+def resultats():
+
+    return render_template("resultats.html")

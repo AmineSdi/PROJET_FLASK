@@ -1,5 +1,5 @@
 CREATE TABLE DECLARATION (
-    no_declaration integer,
+    no_declaration PRIMARY KEY,
     date_declaration DATETIME,
     date_insp_vispre DATETIME,
     nbr_extermin integer,
