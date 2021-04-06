@@ -72,10 +72,23 @@ def accueil():
 
         if description == "" or description == None:
             return render_template("index.html", msg_vide="Le champs est obligatoire")
-    # return render_template("index.html")
+
+        else:
+
+            array_qr = get_db().get_nom_qr(description)
+            array_arrond = get_db().get_nom_arrond(description)
+
+            if array_qr is None and array_arrond is None:
+                return redirect(url_for("resultats", resultat="Aucune donnée trouvée"))
+            if array_qr is not None:
+                print("\n Déclaration selon le quartier :", array_qr, "\n")
+                # return redirect(url_for("resultats", resultat=array_qr))
+            if array_arrond is not None:
+                print("\n Déclaration selon l'arrondissement :",
+                      array_arrond, "\n")
+               # return redirect(url_for("resultats", resultat=array_arrond))
 
 
-@ app.route("/resultats", methods=["POST"])
-def resultats():
-
-    return render_template("resultats.html")
+@app.route("/resultats/<resultat>", methods=["POST,GET"])
+def resultats(resultat):
+    return render_template("resultats.html", resultat=resultat)

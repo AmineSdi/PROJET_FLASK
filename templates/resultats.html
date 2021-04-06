@@ -6,6 +6,23 @@
     <title>Résultats</title>
   </head>
   <body>
-    <h2>salut</h2>
+    {% if exist %}
+    <table>
+      <tr>
+        <th>Déclaration(s) trouvée(s):</th>
+      </tr>
+      <tr>
+        <td>
+          <ul>
+            {% for data in resultat %}
+            <li>{{data}}</li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    </table>
+    {% else %}
+    <h3>Aucune donnée correspondante</h3>
+    {% endif %}
   </body>
 </html>
