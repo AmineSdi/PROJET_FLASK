@@ -6,7 +6,7 @@
     <title>Résultats</title>
   </head>
   <body>
-    {% if exist %}
+    {% if result %}
     <table>
       <tr>
         <th>Déclaration(s) trouvée(s):</th>
@@ -14,7 +14,7 @@
       <tr>
         <td>
           <ul>
-            {% for data in resultat %}
+            {% for data in result %}
             <li>{{data}}</li>
             {% endfor %}
           </ul>

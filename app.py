@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request, url_for, g
-import requests
+# import requests
 import sqlite3
 import re
 import csv
@@ -25,8 +25,9 @@ def close_connection(exception):
     if db is not None:
         db.disconnect()
 
-#############################################
 
+#############################################
+"""
 # Script pour télécharger le fichier CSV
 
 
@@ -56,6 +57,7 @@ with app.app_context():
     next(rows)
     get_db().insert_data(rows)
     a_file.close()
+"""
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -78,17 +80,24 @@ def accueil():
             array_qr = get_db().get_nom_qr(description)
             array_arrond = get_db().get_nom_arrond(description)
 
-            if array_qr is None and array_arrond is None:
-                return redirect(url_for("resultats", resultat="Aucune donnée trouvée"))
+            if not array_qr and not array_arrond:
+                return render_template("declaration.html", result="Rien")
             if array_qr is not None:
                 print("\n Déclaration selon le quartier :", array_qr, "\n")
-                # return redirect(url_for("resultats", resultat=array_qr))
+                return render_template("declaration.html", result=array_qr)
             if array_arrond is not None:
                 print("\n Déclaration selon l'arrondissement :",
                       array_arrond, "\n")
-               # return redirect(url_for("resultats", resultat=array_arrond))
+                return render_template("declaration.html", result=array_arrond)
 
 
-@app.route("/resultats/<resultat>", methods=["POST,GET"])
-def resultats(resultat):
-    return render_template("resultats.html", resultat=resultat)
+@ app.route("/resultats", methods=["POST,GET"])
+def test():
+
+    if request.method == "GET":
+
+        return render_template("declaration.html")
+
+    if request.method == "POST":
+
+        return render_template("declaration.html")

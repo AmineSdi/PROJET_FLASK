@@ -28,11 +28,11 @@ class Database:
         cursor.execute(
             ("SELECT * FROM DECLARATION WHERE nom_qr LIKE ?"), ('%' + decla + '%',))
         exist = cursor.fetchall()
-        return [data for data in exist]
+        return exist
 
     def get_nom_arrond(self, decla):
         cursor = self.get_connection().cursor()
         cursor.execute(
             ("SELECT * FROM DECLARATION WHERE nom_arrond LIKE ?"), ('%' + decla + '%',))
         exist = cursor.fetchall()
-        return [data for data in exist]
+        return exist
