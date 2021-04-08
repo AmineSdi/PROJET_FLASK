@@ -62,42 +62,29 @@ with app.app_context():
 
 @app.route("/", methods=["POST", "GET"])
 def accueil():
-
-    if request.method == "GET":
-
-        return render_template("index.html")
-
-    if request.method == "POST":
-
-        description = request.form["decla"]
-        print(description)
-
-        if description == "" or description == None:
-            return render_template("index.html", msg_vide="Le champs est obligatoire")
-
-        else:
-
-            array_qr = get_db().get_nom_qr(description)
-            array_arrond = get_db().get_nom_arrond(description)
-
-            if not array_qr and not array_arrond:
-                return render_template("declaration.html", result="Rien")
-            if array_qr is not None:
-                print("\n Déclaration selon le quartier :", array_qr, "\n")
-                return render_template("declaration.html", result=array_qr)
-            if array_arrond is not None:
-                print("\n Déclaration selon l'arrondissement :",
-                      array_arrond, "\n")
-                return render_template("declaration.html", result=array_arrond)
+    return render_template("index.html")
 
 
-@ app.route("/resultats", methods=["POST,GET"])
+@ app.route("/resultats", methods=["GET"])
 def test():
 
     if request.method == "GET":
 
-        return render_template("declaration.html")
+        value = request.args.get('decla')
+        print(value)
 
-    if request.method == "POST":
+        if value == "" or value is None:
+            return redirect(url_for("accueil"))
 
-        return render_template("declaration.html")
+        array_qr = get_db().get_nom_qr(value)
+        array_arrond = get_db().get_nom_arrond(value)
+
+        if not array_qr and not array_arrond:
+            return render_template("declaration.html")
+        if array_qr:
+            print("\n Déclaration selon le quartier :", array_qr, "\n")
+            return render_template("declaration.html", result=array_qr, value=value)
+        if array_arrond:
+            print("\n Déclaration selon l'arrondissement :",
+                  array_arrond, "\n")
+            return render_template("declaration.html", result=array_arrond, value=value)
