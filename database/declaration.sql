@@ -1,15 +1,15 @@
 CREATE TABLE DECLARATION (
-    no_declaration PRIMARY KEY,
-    date_declaration DATETIME,
-    date_insp_vispre DATETIME,
-    nbr_extermin integer,
-    date_debuttrait DATETIME,
-    date_finittrait DATETIME,
-    no_qr varchar(5),
-    nom_qr varchar(80),
-    nom_arrond varchar(80),
-    coord_x DECIMAL(6, 1),
-    coord_y DECIMAL(7, 1),
-    longitude DECIMAL(2, 6),
-    latitude DECIMAL(2, 6)
+    no_declaration INTEGER PRIMARY KEY,
+    date_declaration DATETIME NOT NULL,
+    date_insp_vispre DATETIME NOT NULL,
+    nbr_extermin INTEGER NOT NULL,
+    date_debuttrait DATETIME NOT NULL,
+    date_finittrait DATETIME NOY NULL,
+    no_qr varchar(5) NOT NULL,
+    nom_qr varchar(80) NOT NULL,
+    nom_arrond varchar(80) NOT NULL,
+    coord_x DECIMAL(6, 1) NOT NULL,
+    coord_y DECIMAL(7, 1) NOT NULL,
+    longitude DECIMAL(2, 6)NOT NULL,
+    latitude DECIMAL(2, 6) NOT NULL
 );

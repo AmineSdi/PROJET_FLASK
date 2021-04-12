@@ -36,3 +36,10 @@ class Database:
             ("SELECT * FROM DECLARATION WHERE nom_arrond LIKE ?"), ('%' + decla + '%',))
         exist = cursor.fetchall()
         return exist
+
+    def update_db(self,reader):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        cursor.executemany(
+            ("REPLACE INTO DECLARATION(no_declaration,date_declaration,date_insp_vispre,nbr_extermin,date_debuttrait,date_finittrait,no_qr,nom_qr,nom_arrond,coord_x,coord_y,longitude,latitude)" "values(?,?,?,?,?,?,?,?,?,?,?,?,?)"), (reader))
+        connection.commit()
