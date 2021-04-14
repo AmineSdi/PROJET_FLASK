@@ -4,7 +4,7 @@ CREATE TABLE DECLARATION (
     date_insp_vispre DATETIME NOT NULL,
     nbr_extermin INTEGER NOT NULL,
     date_debuttrait DATETIME NOT NULL,
-    date_finittrait DATETIME NOY NULL,
+    date_finittrait DATETIME NOT NULL,
     no_qr varchar(5) NOT NULL,
     nom_qr varchar(80) NOT NULL,
     nom_arrond varchar(80) NOT NULL,

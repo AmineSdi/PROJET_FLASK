@@ -1,4 +1,5 @@
 import sqlite3
+from .declaration import Declaration
 
 
 class Database:
@@ -43,3 +44,9 @@ class Database:
         cursor.executemany(
             ("REPLACE INTO DECLARATION(no_declaration,date_declaration,date_insp_vispre,nbr_extermin,date_debuttrait,date_finittrait,no_qr,nom_qr,nom_arrond,coord_x,coord_y,longitude,latitude)" "values(?,?,?,?,?,?,?,?,?,?,?,?,?)"), (reader))
         connection.commit()
+
+    def get_decla(self,from_date,to_date):
+        cursor = self.get_connection().cursor()
+        cursor.execute("SELECT * FROM DECLARATION WHERE date_declaration BETWEEN ? and ?"), (from_date,to_date,)
+        declas = cursor.fetchall()
+        return (Declaration(decla[0],decla[1],decla[2],decla[3],decla[4],decla[5],decla[6],decla[7],decla[8],decla[9],decla[10],decla[11],decla[12]) for decla in declas)
