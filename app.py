@@ -71,21 +71,24 @@ atexit.register(lambda: scheduler.shutdown())
 import_data()
 data_handler()
 
+# Valider le format ISO8601 pour A4.
 def valider_iso(input):
     regex = re.match(
         "^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$", input)
     is_match = bool(regex)
     return is_match
 
+# Page 404
 @app.errorhandler(404)
 def page_not_found(error):
    return render_template('404.html', title = '404'), 404
 
+#Route principale: Accueil
 @app.route("/", methods=["POST", "GET"])
 def accueil():
     return render_template("index.html")
 
-
+#Route: La route pour afficher les résultat A2.
 @ app.route("/resultats", methods=["GET"])
 def test():
 
@@ -110,7 +113,7 @@ def test():
                   array_arrond, "\n")
             return render_template("declaration.html", result=array_arrond, value=value)
 
-
+# A4: Service REST
 @ app.route("/api/declarations", methods=["GET"])
 def get_declas():
 
@@ -144,6 +147,7 @@ def get_declas():
             print("\n--------------------\n")
             return jsonify([decla.get_decla() for decla in declas])
 
+# Documentation: A4
 @ app.route("/doc", methods=["GET"])
 def afficher_raml():
     return render_template("doc.html")

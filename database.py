@@ -1,7 +1,7 @@
 import sqlite3
 from .declaration import Declaration
 
-
+# Base de données
 class Database:
 
     def __init__(self):
