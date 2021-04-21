@@ -15,4 +15,17 @@ class Declaration:
         self.latitude = latitude
 
     def get_decla(self):
-        return Declaration
+        return {
+            'no_declaration': self.no_declaration,
+            'date_declaration': self.date_declaration,
+            'date_insp_vispre': self.date_insp_vispre,
+            'nbr_extermin':self.nbr_extermin,
+            'date_debuttrait':self.date_debuttrait,
+            'date_finittrait':self.date_finittrait,
+            'no_qr':self.no_qr,
+            'nom_arrond':self.nom_arrond,
+            'coord_x':self.coord_x,
+            'coord_y':self.coord_y,
+            'longitude':self.longitude,
+            'latitude':self.latitude
+        }

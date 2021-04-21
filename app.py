@@ -16,7 +16,6 @@ app.config['JSON_AS_ASCII'] = False
 
 ## Connection avec la base de données ##
 
-
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -33,9 +32,7 @@ def close_connection(exception):
 
 #############################################
 
-# Script pour télécharger le fichier CSV
-
-
+# Importer les données de la ville de montréal
 def import_data():
 
     req = requests.get(
@@ -48,7 +45,7 @@ def import_data():
     csv_file.write(url_content)
     csv_file.close()
 
-
+#Mettre à jour les données dans la base de données
 def data_handler():
     with app.app_context():
         print("On met à jour la base de donnée ...")
@@ -63,7 +60,7 @@ def data_handler():
         csvfile.close()
         print("Mise à jour complétée.")
 
-# BACKGROUNDSCHEDULER
+# BACKGROUNDSCHEDULER: Enclencher la fonction data_handler tous les jours à minuit.
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=data_handler, trigger="cron", hour='00',minute='00')
 scheduler.start()
@@ -76,7 +73,7 @@ data_handler()
 
 def valider_iso(input):
     regex = re.match(
-        "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])", input)
+        "^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$", input)
     is_match = bool(regex)
     return is_match
 
@@ -118,19 +115,35 @@ def test():
 def get_declas():
 
     from_date = request.args.get("du")
+    print("\n--------------------\n")
+    print(type(from_date))
     print(from_date)
     to_date = request.args.get("au")
     print(to_date)
+    print("\n--------------------\n")
     
+
     valid_from = valider_iso(from_date)
-    print(valid_from)
+    print("au: ",valid_from)
     valid_to = valider_iso(to_date)
-    print(valid_to)
+    print("du:",valid_to)
 
     if valid_from == False or valid_to == False:
-        render_template("404.html")
+        return jsonify({'resultat':'Erreur: format ISO8601 non respecté'})
 
-    else:
+    elif valid_from == True and valid_to == True:
 
         declas = get_db().get_decla(from_date,to_date)
-        return jsonify([decla.get_decla() for decla in declas])
+
+        if not declas or declas is None:
+            return jsonify({'resultat':'Aucun résultat trouvé entre les deux dates spécifiées'})
+
+        else :
+            print("\n--------------------\n")
+            print(declas)
+            print("\n--------------------\n")
+            return jsonify([decla.get_decla() for decla in declas])
+
+@ app.route("/doc", methods=["GET"])
+def afficher_raml():
+    return render_template("doc.html")
