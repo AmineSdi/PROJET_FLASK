@@ -13,7 +13,8 @@
       <a href="#contact">Contact</a>
       <input type="text" placeholder="Search..">
     </div>
-    <div class="login-box">
+    
+    <div class="login-box" id="declarations">
       <h2>Recherche déclaration</h2>
       <form action="/resultats" method="GET">
         {% if msg_vide %}
@@ -22,10 +23,32 @@
         <div class="user-box">
           <input type="text" id="id-decla" name="decla" placeholder="Par nom de quartier ou d'arrondissement ..."/>
           <label for="id-decla">Déclaration : </label>
-          
-          <button type="submit">Envoyer</button>
+        </div>
+          <button type="submit" id="search-declas">Envoyer</button>
       </form>
-    </div>
+     </div>
+    
+
+     <div class="login-box" id="dates">
+      <h2>Recherche par dates</h2>
+      <form action="/api/declarations" method="GET">
+        <div class="user-box">
+          <input type="text" id="id-du" name="du" placeholder="Du ..."/>
+          <label for="id-decla">Date de début : </label>
+        </div>
+
+        <div class="user-box" id=date2>
+          <input type="text" id="id-au" name="au" placeholder="Au ..."/>
+          <label for="id-decla">Date de fin : </label>
+        </div>
+        <br>
+        <br>
+          <button type="submit" id="search-date">Envoyer</button>
+      </form>
+     </div>
+  
+     <div id="date-div"></div>
+     <script src="../static/js/accueil.js"></script>
   </body>
 </html>
 

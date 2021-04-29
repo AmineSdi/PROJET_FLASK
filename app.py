@@ -68,8 +68,8 @@ atexit.register(lambda: scheduler.shutdown())
 
 # Fonction main (principale)
 
-import_data()
-data_handler()
+#import_data()
+#data_handler()
 
 # Valider le format ISO8601 pour A4.
 def valider_iso(input):
@@ -145,6 +145,7 @@ def get_declas():
             print("\n--------------------\n")
             print(declas)
             print("\n--------------------\n")
+            
             return jsonify([decla.get_decla() for decla in declas])
 
 # Documentation: A4
