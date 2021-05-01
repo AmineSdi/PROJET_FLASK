@@ -31,7 +31,8 @@
 
      <div class="login-box" id="dates">
       <h2>Recherche par dates</h2>
-      <form action="/api/declarations" method="GET">
+
+      <form action="/api/declarations" method="GET" id="form-dates">
         <div class="user-box">
           <input type="text" id="id-du" name="du" placeholder="Du ..."/>
           <label for="id-decla">Date de début : </label>
@@ -43,12 +44,12 @@
         </div>
         <br>
         <br>
-          <button type="submit" id="search-date">Envoyer</button>
+          <button type="submit"id="search-date">Envoyer</button>
       </form>
      </div>
   
      <div id="date-div"></div>
-     <script src="../static/js/accueil.js"></script>
+    <script src="{{ url_for('static', filename='js/accueil.js') }}"></script>
   </body>
 </html>
 

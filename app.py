@@ -114,7 +114,7 @@ def test():
             return render_template("declaration.html", result=array_arrond, value=value)
 
 # A4: Service REST
-@ app.route("/api/declarations", methods=["GET"])
+@ app.route("/api/declarations", methods=["POST,GET"])
 def get_declas():
 
     from_date = request.args.get("du")

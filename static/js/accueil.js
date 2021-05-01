@@ -1,44 +1,17 @@
-$(document).ready(function(){
-$('#search-date').click(function(event){
-    event.preventDefault();
-    if($('#id-du').val() < $('#id-au').val()) {
-        $.ajax({
-            data: {
-                du: $('#id-du').val(),
-                au: $('#id-au').val()
-            },
-            type: 'GET',
-            url: 'api/declarations',
-            dataType: 'JSON',
-            async: false,
-            success: function (data) {
-                let tableResultat = "";
-                let table = "<div>" +
-                    "<h2 class=\"text-center\" style=\"margin-bottom: 20px;\">Les déclarations</h2>" +
-                    "<table>" +
-                    "<tr>" +
-                    "<th>Nom de l'arrondissement</th><th>Nom de quartier</th></tr>";
-                tableResultat += table;
+const myForm = document.getElementById("form-dates");
 
-                for (let i = 0; i < data.dict.length; i++) {
-                    let nom_arrond = data.dict[i].nom_arrond;
-                    let nom_qr = data.dict[i].nom_qr;
+myForm.addEventListener('submit',function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
 
-                    let dataTable = "<tr> " + "<td>" + nom_arrond + "</td>" + "<td>" + nom_qr
-                        + "</td>" + " </tr> "
-                    tableResultat += dataTable;
-                }
-                tableResultat += "</table></div>";
-                $("#date-div").append(tableResultat);
-            },
+    fetch("/api/declarations", {
+        method: "GET",
+        body: formData
 
-            error: function (e) {
-                alert('Erreur: ' + e);
-            }
-        });
-    }
-    else
-        alert("la deuxième date doit être supérieur à la première!");
-});
+    }).then(function(response) {
+        return response.text();
+    }).then(function (text) {
+        document.getElementById("date-div").innerHTML = text;
+    });
 
 });
