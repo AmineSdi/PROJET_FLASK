@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Création profil</title>
+  </head>
+  <body>
+    <div class="topnav">
+    <a href="/">home</a>
+      <a class="active" href="/ajout-user">Création profil</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <input type="text" placeholder="Search..">
+    </div>
+    
+    <div class="login-box" id="form-css">
+      <h2>Création de profil d'un utilisateur</h2>
+      <form action="/ajout-user" method="POST" id="form-user">
+      
+        <div class="user-box">
+
+         <div id="msg-nom" style="color: red;"></div>
+          <input type="text" id="id-nom" name="nom" placeholder="Nom de l'utilisateur ..."/>
+
+          <div id="msg-email" style="color: red;"></div>
+          <input type="text" id="id-email" name="email" placeholder="Email de l'utilisateur"/>
+         <br>
+          <div id="msg-list" style="color: red;"></div>
+
+          <select name="list_qr" id="id-list-qr">
+            <option value="" selected disabled placeholder="">Sélectionner le nom des quartiers</option>
+            {% for qr in liste_quartier %}
+                <option name="{{ qr }} "value="{{ qr }}">{{ qr }}</option>
+            {% endfor %}
+        </select>
+
+        <div id="msg-mdp" style="color: red;"></div>
+        <input type="text" id="id-mdp" name="mdp" placeholder="Mot de passe ..."/>
+
+        </div>
+          <button type="submit" onsubmit="validerform();">Soumettre</button>
+      </form>
+     </div>
+     <script src="{{ url_for('static', filename='js/test.js') }}"></script>
+     <h1 style="text-align: center; color: red;" id="hidden">Salut</h1>
+  </body>
+</html>
+

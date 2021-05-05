@@ -6,10 +6,12 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
     <title>Accueil Déclaration</title>
   </head>
+
   <body>
+    
     <div class="topnav">
-      <a class="active" href="#home">Home</a>
-      <a href="#about">About</a>
+      <a class="active" href="/">Accueil</a>
+      <a href="/ajout-user">Création profil</a>
       <a href="#contact">Contact</a>
       <input type="text" placeholder="Search..">
     </div>
@@ -32,24 +34,37 @@
      <div class="login-box" id="dates">
       <h2>Recherche par dates</h2>
 
-      <form action="/api/declarations" method="GET" id="form-dates">
+      <form id="form-dates">
+        <div id="msg_error"></div>
         <div class="user-box">
           <input type="text" id="id-du" name="du" placeholder="Du ..."/>
-          <label for="id-decla">Date de début : </label>
+          <label for="id-du">Date de début : </label>
         </div>
-
+        
         <div class="user-box" id=date2>
           <input type="text" id="id-au" name="au" placeholder="Au ..."/>
-          <label for="id-decla">Date de fin : </label>
+          <label for="id-au">Date de fin : </label>
+
         </div>
         <br>
         <br>
-          <button type="submit"id="search-date">Envoyer</button>
+          <button type="submit">Envoyer</button>
+
       </form>
      </div>
   
-     <div id="date-div"></div>
-    <script src="{{ url_for('static', filename='js/accueil.js') }}"></script>
+    
+      <table id="table-date" style="width:100%">
+        <tr>
+          <th>Nom arrondissement</th>
+          <th>Nom quartier</th>
+          <th>Nombre de déclarations pour ce quartier</th>
+        </tr>
+        <div id="date-div"></div>
+      </table>
+    
+  
+     <script src="{{ url_for('static', filename='js/accueil.js') }}"></script>
   </body>
 </html>
 

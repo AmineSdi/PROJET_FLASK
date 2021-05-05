@@ -8,6 +8,7 @@ class Declaration:
         self.date_debuttrait = date_debuttrait
         self.date_finittrait = date_finittrait
         self.no_qr = no_qr
+        self.nom_qr = nom_qr
         self.nom_arrond = nom_arrond
         self.coord_x = coord_x
         self.coord_y = coord_y
@@ -23,6 +24,7 @@ class Declaration:
             'date_debuttrait':self.date_debuttrait,
             'date_finittrait':self.date_finittrait,
             'no_qr':self.no_qr,
+            'nom_qr':self.nom_qr,
             'nom_arrond':self.nom_arrond,
             'coord_x':self.coord_x,
             'coord_y':self.coord_y,

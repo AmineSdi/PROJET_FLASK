@@ -13,3 +13,12 @@ CREATE TABLE DECLARATION (
     longitude DECIMAL(2, 6)NOT NULL,
     latitude DECIMAL(2, 6) NOT NULL
 );
+
+create table profil_user (
+  id INTEGER PRIMARY KEY,
+  nom NVARCHAR(300),
+  email NVARCHAR(200),
+  quartier NVARCHAR(300),
+  salt varchar(60),
+  hash varchar(130)
+);

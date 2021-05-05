@@ -1,4 +1,6 @@
 import sqlite3
+import uuid
+import hashlib
 from .declaration import Declaration
 
 # Base de données
@@ -44,3 +46,27 @@ class Database:
         cursor.execute(("SELECT * FROM DECLARATION WHERE date_declaration BETWEEN ? and ?"), (from_date,to_date,))
         declas = cursor.fetchall()
         return (Declaration(decla[0],decla[1],decla[2],decla[3],decla[4],decla[5],decla[6],decla[7],decla[8],decla[9],decla[10],decla[11],decla[12]) for decla in declas)
+
+    def get_list_quartier(self):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select distinct nom_qr from DECLARATION order by nom_qr")
+        quartiers = cursor.fetchall()
+        return [(qr[0]) for qr in quartiers]
+
+    def get_profil(self, email):
+        cursor = self.get_connection().cursor()
+        cursor.execute("select email from profil_user "
+                       "where email = ? ", (email,))
+        email_user = cursor.fetchall()
+        return [(email[0]) for email in email_user]
+
+    def insert_profil(self, nom, email, listeqr, mdp):
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        salt = uuid.uuid4().hex
+        hashed_password = hashlib.sha512(str(mdp + salt).encode("utf-8")).hexdigest()
+
+        cursor.execute(("insert into profil_user(nom, email, quartier, salt, hash) "
+                        "values(?,?,?,?,?)"),
+                       (nom, email, listeqr,salt, hashed_password))
+        connection.commit()

@@ -85,3 +85,10 @@ types:
             description: The person was deleted successfully.
           404:
             description: The specified identifier does not exist.
+
+/ajout-user:
+  post:
+    description:  Ajouter un utilisateur et sa liste de quartiers à surveiller et recevoir sa confirmation.
+    responses:
+      201:
+        description: l'ajout d'utilisateur a été avec succès.

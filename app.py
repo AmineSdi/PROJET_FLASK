@@ -1,4 +1,6 @@
 from flask import Flask, jsonify,redirect, render_template, request, url_for, g
+from flask_json_schema import JsonSchema, JsonValidationError
+import json
 import requests
 import sqlite3
 from .declaration import Declaration
@@ -14,8 +16,30 @@ from datetime import datetime
 app = Flask(__name__, static_url_path="", static_folder="static")
 app.config['JSON_AS_ASCII'] = False
 
-## Connection avec la base de données ##
 
+#######################################
+schema = JsonSchema(app)
+
+schema_user = {
+    'required': ['nom','email','list_quartiers' 'motdepasse'],
+    'properties': {
+        'nom': {
+            'type': 'string'
+        },
+        'email': {
+            'type': 'string'
+        },
+        'list_quartiers': {
+            'type': 'string'
+        },
+        'motdepasse': {
+            'type': 'string'
+        },
+    },
+    'additionalProperties': False
+
+}
+## Connection avec la base de données ##
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -48,7 +72,7 @@ def import_data():
 #Mettre à jour les données dans la base de données
 def data_handler():
     with app.app_context():
-        print("On met à jour la base de donnée ...")
+        print("On met à jour la base de données ...")
         import_data()
     
         with open('declaration_punaises.csv') as csvfile:
@@ -114,39 +138,89 @@ def test():
             return render_template("declaration.html", result=array_arrond, value=value)
 
 # A4: Service REST
-@ app.route("/api/declarations", methods=["POST,GET"])
+@ app.route("/api/declarations", methods=["POST","GET"])
 def get_declas():
 
-    from_date = request.args.get("du")
-    print("\n--------------------\n")
-    print(type(from_date))
-    print(from_date)
-    to_date = request.args.get("au")
-    print(to_date)
-    print("\n--------------------\n")
-    
+    if request.method == "POST":
 
-    valid_from = valider_iso(from_date)
-    print("au: ",valid_from)
-    valid_to = valider_iso(to_date)
-    print("du:",valid_to)
+        du = request.form["du"]
+        au = request.form["au"]
 
-    if valid_from == False or valid_to == False:
-        return jsonify({'resultat':'Erreur: format ISO8601 non respecté'})
+        valid_from = valider_iso(du)
+        print("au: ",valid_from)
+        valid_to = valider_iso(au)
+        print("du:",valid_to)
 
-    elif valid_from == True and valid_to == True:
+        if valid_from == False or valid_to == False:
+            return jsonify({'resultat':'Erreur: format ISO8601 non respecté'})
 
-        declas = get_db().get_decla(from_date,to_date)
+        elif valid_from == True and valid_to == True:
 
-        if not declas or declas is None:
-            return jsonify({'resultat':'Aucun résultat trouvé entre les deux dates spécifiées'})
+            declas = get_db().get_decla(du,au)
 
-        else :
-            print("\n--------------------\n")
-            print(declas)
-            print("\n--------------------\n")
-            
-            return jsonify([decla.get_decla() for decla in declas])
+            if not declas or declas is None:
+                return jsonify({'resultat':'Aucun résultat trouvé entre les deux dates spécifiées'})
+
+            else :
+                print("\n--------------------\n")
+                print(declas)
+                print("\n--------------------\n")
+                
+                return jsonify([decla.get_decla() for decla in declas])
+
+
+    if request.method == "GET" :
+        from_date = request.args.get("du")
+        print("\n--------------------\n")
+        print(type(from_date))
+        print(from_date)
+        to_date = request.args.get("au")
+        print(to_date)
+        print("\n--------------------\n")
+        
+
+        valid_from = valider_iso(from_date)
+        print("au: ",valid_from)
+        valid_to = valider_iso(to_date)
+        print("du:",valid_to)
+
+        if valid_from == False or valid_to == False:
+            return jsonify({'resultat':'Erreur: format ISO8601 non respecté'})
+
+        elif valid_from == True and valid_to == True:
+
+            declas = get_db().get_decla(from_date,to_date)
+
+            if not declas or declas is None:
+                return jsonify({'resultat':'Aucun résultat trouvé entre les deux dates spécifiées'})
+
+            else :
+                print("\n--------------------\n")
+                print(declas)
+                print("\n--------------------\n")
+                
+                return jsonify([decla.get_decla() for decla in declas])
+
+
+#E1: Ajout utilisateur
+@app.route('/ajout-user', methods=["GET", "POST"])
+@schema.validate(schema_user)
+def ajout_utilisateur():
+    if request.method == "GET":
+        liste = get_db().get_list_quartier()
+        return render_template('utilisateur.html', liste_quartier=liste)
+    else:
+        nom = request.form["nom"]
+        email = request.form["email"]
+        motdepasse = request.form["mdp"]
+        liste_qr = request.form.get('list_qr')
+        print(liste_qr);
+
+        if not get_db().get_profil(email):
+            get_db().insert_profil(nom, email, liste_qr, motdepasse)
+            return jsonify(request.form)
+        else:
+            return jsonify({'success': False}), 404, {'ContentType': 'application/json'}
 
 # Documentation: A4
 @ app.route("/doc", methods=["GET"])
